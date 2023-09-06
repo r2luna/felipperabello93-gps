@@ -16,15 +16,15 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('cpf')->nullable();;
-            $table->string('telefone')->nullable();;
+            $table->string('cpf')->nullable();
+            $table->string('telefone')->nullable();
             $table->string('role');
             $table->unsignedBigInteger('prestador_id')->nullable();
             $table->foreign('prestador_id')->references('id')->on('prestador');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('sn_ativo',['S','N'])->default('S');
+            $table->enum('sn_ativo', ['S', 'N'])->default('S');
             $table->rememberToken();
             $table->timestamps();
         });

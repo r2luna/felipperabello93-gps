@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nome')->nullable();
             $table->string('cpf')->nullable();
             $table->string('telefone')->nullable();
-            $table->enum('sn_ativo',['S','N'])->default('S');
+            $table->enum('sn_ativo', ['S', 'N'])->default('S');
             $table->unsignedBigInteger('empresa_id');
             $table->foreign('empresa_id')->references('id')->on('empresa');
             $table->timestamps();

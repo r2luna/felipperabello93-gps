@@ -10,8 +10,8 @@ class PrestadorBD extends Model
     use HasFactory;
 
     protected $table = 'prestador';
-    protected $fillable = ['nome','cpf','telefone','empresa_id','sn_ativo'];
 
+    protected $fillable = ['nome', 'cpf', 'telefone', 'empresa_id', 'sn_ativo'];
 
     public function empresa()
     {

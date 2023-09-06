@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 
 class GpsController extends Controller
 {
@@ -18,18 +18,15 @@ class GpsController extends Controller
         ];
 
         $processo = new Client();
-       // $processo = $processo->get($url);
-        $processo = $processo->get($url, [ 'query' => $params,  'http_errors'  =>  false, 'allow_redirects' => false]);
-
+        // $processo = $processo->get($url);
+        $processo = $processo->get($url, ['query' => $params,  'http_errors' => false, 'allow_redirects' => false]);
 
         $code = $processo->getStatusCode();
 
-        if($code == 200)
-        {
+        if ($code == 200) {
 
-        $processo= $processo->getBody()->getContents();
-        $processo = collect(json_decode(($processo)));
-
+            $processo = $processo->getBody()->getContents();
+            $processo = collect(json_decode(($processo)));
 
         }
 

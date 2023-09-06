@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('prestador_id')->nullable();
             $table->foreign('prestador_id')->references('id')->on('prestador');
-            $table->enum('tipo',['E','S']);
+            $table->enum('tipo', ['E', 'S']);
             $table->date('dia');
             $table->dateTime('data_hora');
             $table->string('latitude');

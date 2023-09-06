@@ -2,25 +2,26 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use GuzzleHttp\Client;
+use Livewire\Component;
 
 class Gps extends Component
 {
     public $lon;
+
     public $lat;
+
     public $retorno;
 
-
     protected $listeners = [
-        'set:latitude-longitude' => 'setLatitudeLongitude'
+        'set:latitude-longitude' => 'setLatitudeLongitude',
     ];
 
     public function setLatitudeLongitude($latitude, $longitude)
-{
-   $this->lat = $latitude;
-   $this->lon = $longitude;
-}
+    {
+        $this->lat = $latitude;
+        $this->lon = $longitude;
+    }
 
     public function render()
     {
@@ -37,24 +38,20 @@ class Gps extends Component
             'lat' => $this->lat,
         ];
 
-
         $processo = new Client();
         //$processo = $processo->get($url);
-        $processo = $processo->get($url, [ 'query' => $params,  'http_errors'  =>  false, 'allow_redirects' => false]);
-
+        $processo = $processo->get($url, ['query' => $params,  'http_errors' => false, 'allow_redirects' => false]);
 
         $code = $processo->getStatusCode();
 
-        if($code == 200)
-        {
+        if ($code == 200) {
 
-        $processo= $processo->getBody()->getContents();
-        $processo = collect(json_decode(($processo)));
+            $processo = $processo->getBody()->getContents();
+            $processo = collect(json_decode(($processo)));
 
-        $this->retorno = $processo['display_name'];
+            $this->retorno = $processo['display_name'];
 
-
-        //$processo['address']->residential;
+            //$processo['address']->residential;
 
         }
 

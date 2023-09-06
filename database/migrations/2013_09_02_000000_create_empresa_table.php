@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nome')->nullable();
             $table->string('cnpj')->nullable();
             $table->string('endereco')->nullable();
-            $table->enum('sn_ativo',['S','N'])->default('S');
+            $table->enum('sn_ativo', ['S', 'N'])->default('S');
             $table->timestamps();
         });
     }

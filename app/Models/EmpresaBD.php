@@ -10,8 +10,6 @@ class EmpresaBD extends Model
     use HasFactory;
 
     protected $table = 'empresa';
-    protected $fillable = ['nome','cnpj','endereco','sn_ativo'];
 
-
-
+    protected $fillable = ['nome', 'cnpj', 'endereco', 'sn_ativo'];
 }
