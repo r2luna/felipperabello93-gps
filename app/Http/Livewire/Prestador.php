@@ -2,90 +2,78 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\EmpresaBD;
+use App\Models\PrestadorBD;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\PrestadorBD;
-use App\Models\EmpresaBD;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Trait\RoutesT;
-
-
-
 
 class Prestador extends Component
 {
-
     use WithPagination;
-    use RoutesT;
 
     public $nome;
+
     public $idItem;
+
     public $sn_ativo;
+
     public $cpf;
+
     public $telefone;
+
     public $empresa_id;
-    public $search = "";
-    public $rota;
 
-    protected $listeners = [
-        'set:redirectRoute' => 'setredirectRoute'
-    ];
-
+    public $search = '';
 
     protected $messages = [
         'nome.required' => 'O campo é obrigatório.',
-        'idItem.required' =>'O campo é obrigatório',
+        'idItem.required' => 'O campo é obrigatório',
         'sn_ativo.required' => 'O campo é obrigatório',
         'empresa_id.required' => 'O campo é obrigatório',
     ];
 
-    protected $rules =  [
+    protected $rules = [
         'nome' => 'min:3|required',
         'sn_ativo' => 'required',
-        'empresa_id' => 'required'
+        'empresa_id' => 'required',
     ];
-
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-
     public function render()
     {
         $prestador = PrestadorBD::with('empresa')->search('nome', $this->search)->paginate(10);
-        $empresa = EmpresaBD::where('sn_ativo','S')->get();
+        $empresa = EmpresaBD::where('sn_ativo', 'S')->get();
 
-        return view('livewire.prestador', compact('prestador','empresa'));
+        return view('livewire.prestador', compact('prestador', 'empresa'));
     }
 
     public function updated($propertyName)
     {
-        if($this->idItem != "")
-        {
+        if ($this->idItem != '') {
             $this->rules['idItem'] = 'required';
         }
-
 
         $this->validateOnly($propertyName, $this->rules);
     }
 
     public function openModal()
     {
-        $this->nome = "";
-        $this->cpf = "";
-        $this->telefone = "";
-        $this->idItem = "";
-        $this->sn_ativo = "S";
-        $this->empresa_id = "";
+        $this->nome = '';
+        $this->cpf = '';
+        $this->telefone = '';
+        $this->idItem = '';
+        $this->sn_ativo = 'S';
+        $this->empresa_id = '';
     }
 
     public function create()
     {
 
-        if($this->idItem == "")
-        {
+        if ($this->idItem == '') {
             $this->validate();
 
             PrestadorBD::create([
@@ -98,27 +86,24 @@ class Prestador extends Component
 
             $this->dispatchBrowserEvent('alert', [
                 'type' => 'success',
-                'message' => "Cadastro realizado com sucesso!!",
+                'message' => 'Cadastro realizado com sucesso!!',
             ]);
-        }
-        else
-        {
+        } else {
             $this->rules['idItem'] = 'required';
             $this->validate($this->rules);
             PrestadorBD::find($this->idItem)
-                      ->update([
-                                'nome' => $this->nome,
-                                'sn_ativo' => $this->sn_ativo,
-                                'cpf' => $this->cpf,
-                                'empresa_id' => $this->empresa_id,
-                                'telefone' => $this->telefone
-                            ]);
+                ->update([
+                    'nome' => $this->nome,
+                    'sn_ativo' => $this->sn_ativo,
+                    'cpf' => $this->cpf,
+                    'empresa_id' => $this->empresa_id,
+                    'telefone' => $this->telefone,
+                ]);
 
-
-                      $this->dispatchBrowserEvent('alert', [
-                        'type' => 'success',
-                        'message' => "Atualização realizada com sucesso!!",
-                    ]);
+            $this->dispatchBrowserEvent('alert', [
+                'type' => 'success',
+                'message' => 'Atualização realizada com sucesso!!',
+            ]);
 
         }
 

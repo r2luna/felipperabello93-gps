@@ -2,53 +2,41 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\EmpresaBD;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\EmpresaBD;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Trait\RoutesT;
-
-
-
 
 class Empresa extends Component
 {
-
     use WithPagination;
-    use RoutesT;
 
     public $nome;
-    public $idItem;
-    public $sn_ativo;
-    public $cnpj;
-    public $endereco;
-    public $search = "";
-    public $rota;
 
+    public $idItem;
+
+    public $sn_ativo;
+
+    public $cnpj;
+
+    public $endereco;
+
+    public $search = '';
 
     protected $messages = [
         'nome.required' => 'O campo é obrigatório.',
-        'idItem.required' =>'O campo é obrigatório',
+        'idItem.required' => 'O campo é obrigatório',
         'sn_ativo.required' => 'O campo é obrigatório',
     ];
 
-    protected $rules =  [
+    protected $rules = [
         'nome' => 'min:3|required',
-        'sn_ativo' => 'required'
+        'sn_ativo' => 'required',
     ];
-
-    protected $listeners = [
-        'set:redirectRoute' => 'setredirectRoute'
-    ];
-
-
-
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
-
 
     public function render()
     {
@@ -59,34 +47,28 @@ class Empresa extends Component
 
     public function updated($propertyName)
     {
-        if($this->idItem != "")
-        {
+        if ($this->idItem != '') {
             $this->rules['idItem'] = 'required';
         }
-
 
         $this->validateOnly($propertyName, $this->rules);
     }
 
     public function openModal()
     {
-        $this->nome = "";
-        $this->cnpj = "";
-        $this->endereco = "";
-        $this->idItem = "";
-        $this->sn_ativo = "S";
+        $this->nome = '';
+        $this->cnpj = '';
+        $this->endereco = '';
+        $this->idItem = '';
+        $this->sn_ativo = 'S';
     }
 
     public function create()
     {
 
-
-
-        if($this->idItem == "")
-        {
+        if ($this->idItem == '') {
 
             $this->validate();
-
 
             EmpresaBD::create([
                 'nome' => $this->nome,
@@ -97,26 +79,23 @@ class Empresa extends Component
 
             $this->dispatchBrowserEvent('alert', [
                 'type' => 'success',
-                'message' => "Cadastro realizado com sucesso!!",
+                'message' => 'Cadastro realizado com sucesso!!',
             ]);
-        }
-        else
-        {
+        } else {
             $this->rules['idItem'] = 'required';
             $this->validate($this->rules);
             EmpresaBD::find($this->idItem)
-                      ->update([
-                                'nome' => $this->nome,
-                                'sn_ativo' => $this->sn_ativo,
-                                'cnpj' => $this->cnpj,
-                                'endereco' => $this->endereco
-                            ]);
+                ->update([
+                    'nome' => $this->nome,
+                    'sn_ativo' => $this->sn_ativo,
+                    'cnpj' => $this->cnpj,
+                    'endereco' => $this->endereco,
+                ]);
 
-
-                      $this->dispatchBrowserEvent('alert', [
-                        'type' => 'success',
-                        'message' => "Atualização realizada com sucesso!!",
-                    ]);
+            $this->dispatchBrowserEvent('alert', [
+                'type' => 'success',
+                'message' => 'Atualização realizada com sucesso!!',
+            ]);
 
         }
 
